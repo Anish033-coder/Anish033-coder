@@ -105,15 +105,6 @@ I build backend systems and full-stack applications. My focus is on writing code
 ![Render](https://img.shields.io/badge/Render-46E3B7?style=flat&logo=render&logoColor=white)
 ![Neon](https://img.shields.io/badge/Neon-00E699?style=flat&logo=neon&logoColor=black)
 
----
-
-## GitHub Stats
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Anish033-coder&show_icons=true&theme=dark&hide_border=true&count_private=true" height="160" />
-  &nbsp;&nbsp;
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Anish033-coder&layout=compact&theme=dark&hide_border=true" height="160" />
-</p>
 
 
 
