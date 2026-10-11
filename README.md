@@ -1,8 +1,8 @@
 <h1 align="center">Hi, I'm Anish Kumawat 👋</h1>
 
 <p align="center">
-  3nd year CSE @ IIIT Lucknow (2024–2028) &nbsp;·&nbsp;
-  Backend & Full Stack Engineer &nbsp;·&nbsp;
+  3rd year CSE @ IIIT Lucknow (2024–2028) &nbsp;·&nbsp;
+  Backend & Full Stack Engineer
 </p>
 
 <p align="center">
@@ -12,6 +12,10 @@
   &nbsp;
   <a href="mailto:anish.kumawat2401@gmail.com">
     <img src="https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white" />
+  </a>
+  &nbsp;
+  <a href="https://portfolio-delta-two-54.vercel.app/">
+    <img src="https://img.shields.io/badge/Portfolio-000000?style=flat&logo=vercel&logoColor=white" />
   </a>
   &nbsp;
   <a href="https://codeforces.com/profile/Anish033">
@@ -29,21 +33,37 @@
 
 I build backend systems and full-stack applications. My focus is on writing code that is correct under pressure — concurrent systems, atomic operations, and production-grade deployments.
 
-
 - 🏗️ Building fintech infrastructure and AI-powered tools
-- 🚀 Both projects are live and deployed end-to-end
+- 🤖 RAG chatbots that cite their sources, on Amazon Bedrock and Gemini
+- 📊 ML on messy real-world data: 0.979 F0.5 in the Amazon ML Challenge 2026
+
+💼 **Available for freelance:** backend APIs, AI chatbots (RAG), and data matching / deduplication. Email me at **anish.kumawat2401@gmail.com**.
 
 ---
 
 ## Projects
 
+### ♻️ KabadiSetu — Waste sorting & scrap pickups for Jaipur homes
+
+> Households identify an item by photo or search, learn which waste stream it goes to, and send a clear pickup request to their local kabadiwala. In Hindi and English.
+
+**Tech Stack:** React · TypeScript · Python · AWS Lambda · DynamoDB · Rekognition · Cognito · AWS SAM
+
+**Live:** [live-demo](https://main.d364mryjpwg6jn.amplifyapp.com) &nbsp;·&nbsp; **Demo video:** [YouTube](https://youtu.be/f0JD8LPav94) &nbsp;·&nbsp; **Code:** [GitHub](https://github.com/Anish033-coder/kabadi-setu)
+
+- **The AI only names the item** — code maps Rekognition's labels to a catalogue item or a short list, versioned rules decide the waste stream, and the person confirms. About $0.0013 per photo scan
+- **116 automated tests** — including double taps and a cancel racing an accept, run against DynamoDB Local
+- **Documented decisions** — architecture decision records, a problem log, and an honest list of what isn't proven yet
+
+---
+
 ### 💳 Transaction Ledger & Balance Management System
 
 > A production-grade financial transaction backend with atomic money transfers, deadlock-safe concurrency, double-entry bookkeeping, and automated reconciliation.
 
-**Tech Stack:** Node.js · Express · PostgreSQL · React · Knex.js · Jest · Railway · Vercel
+**Tech Stack:** Node.js · Express · PostgreSQL · React · Knex.js · Jest · Render · Neon · Vercel
 
-**Live:** [live-demo](https://transactional-lader-system.vercel.app) &nbsp;·&nbsp; **Code:** [GitHub](https://github.com/Anish033-coder/Transactional-Ladger-System)
+**Live:** [live-demo](https://transactional-lader-system.vercel.app) &nbsp;·&nbsp; **Code:** [GitHub](https://github.com/Anish033-coder/Transactional_Ledger_System)
 
 **Key Engineering Decisions:**
 
@@ -53,6 +73,35 @@ I build backend systems and full-stack applications. My focus is on writing code
 - **3-check SQL reconciliation engine** — verifies money conservation across all accounts, confirms debits equal credits per transaction, and flags stuck `PENDING` transactions older than 5 minutes
 - **Jest integration tests** — cover atomic transfer success, full rollback-on-failure (both balances unchanged), and idempotency deduplication (same key twice = one deduction)
 - **Security** — JWT authentication, Zod schema validation on all endpoints, Helmet for HTTP security headers, IP-based rate limiting
+
+---
+
+### 🔗 Business Entity Resolution — Amazon ML Challenge 2026 (team lead)
+
+> Links business records across three noisy sources with no shared ID — typos, truncated names, Indic scripts — without merging look-alike businesses.
+
+**Tech Stack:** Python · Polars · LightGBM · RapidFuzz · MinHash LSH
+
+**Code:** [GitHub](https://github.com/Anish033-coder/amazon-ml-2026)
+
+- **0.979 F0.5** on the public leaderboard, up from 0.929 for our first submission
+- **Blocking** with name/address keys and MinHash keeps 98% of true pairs at about 39 candidates per record
+- **Two-stage LightGBM** on 89 similarity and difference features; each record's matches chosen to maximise expected F0.5
+- **Debugged with SHAP** — traced a leaderboard regression to one statistic and fixed it. Runs on a 16 GB laptop CPU
+
+---
+
+### 📚 VidyaAI — Syllabus-grounded AI tutor on Amazon Bedrock (team lead)
+
+> Turns a course's PDFs into a tutor that answers with citations to the exact passage, plus quizzes, mock interviews and practice exams.
+
+**Tech Stack:** React · Node.js · Express · Amazon Bedrock (Knowledge Bases, Guardrails) · MongoDB Atlas
+
+**Code:** [GitHub](https://github.com/Anish033-coder/vidyaai)
+
+- **RAG with citations** — Bedrock Knowledge Base (Titan embeddings, OpenSearch Serverless) returns the source passage under every answer
+- **One pipeline, five modes** — Ask, Teach, Quiz, Interview and Exam all go through the same `buildPrompt → callLLM` path, wrapped in Bedrock Guardrails
+- **Built at First Commit (Bharat Builds Tour)** — moved an existing RAG pipeline onto Bedrock in 4 days with a team of 4
 
 ---
 
@@ -74,6 +123,7 @@ I build backend systems and full-stack applications. My focus is on writing code
 
 **Why I built this:** LeetCode measures correctness. Real interviews measure how you communicate under pressure. This builds the missing layer.
 
+---
 
 ## Tech Stack
 
@@ -83,6 +133,7 @@ I build backend systems and full-stack applications. My focus is on writing code
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=flat&logo=openjdk&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
 
 **Backend & Databases**
 
@@ -90,6 +141,14 @@ I build backend systems and full-stack applications. My focus is on writing code
 ![Express](https://img.shields.io/badge/Express-000000?style=flat&logo=express&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)
+![DynamoDB](https://img.shields.io/badge/DynamoDB-4053D6?style=flat&logo=amazondynamodb&logoColor=white)
+
+**AI / ML**
+
+![Amazon Bedrock](https://img.shields.io/badge/Amazon_Bedrock-232F3E?style=flat&logo=amazonwebservices&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini_API-4285F4?style=flat&logo=google&logoColor=white)
+![LightGBM](https://img.shields.io/badge/LightGBM-2C7BB6?style=flat)
 
 **Frontend & Tools**
 
@@ -101,10 +160,7 @@ I build backend systems and full-stack applications. My focus is on writing code
 
 **Deployment**
 
+![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat&logo=amazonwebservices&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white)
 ![Render](https://img.shields.io/badge/Render-46E3B7?style=flat&logo=render&logoColor=white)
 ![Neon](https://img.shields.io/badge/Neon-00E699?style=flat&logo=neon&logoColor=black)
-
-
-
-
