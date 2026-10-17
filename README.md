@@ -59,7 +59,7 @@ I build backend systems and full-stack applications. My focus is on writing code
 
 ### 💳 Transaction Ledger & Balance Management System
 
-> A production-grade financial transaction backend with atomic money transfers, deadlock-safe concurrency, double-entry bookkeeping, and automated reconciliation.
+> A financial transaction backend (simulated money) with atomic transfers, deadlock-safe locking, exact decimal maths, double-entry bookkeeping, and automated reconciliation.
 
 **Tech Stack:** Node.js · Express · PostgreSQL · React · Knex.js · Jest · Render · Neon · Vercel
 
@@ -67,12 +67,14 @@ I build backend systems and full-stack applications. My focus is on writing code
 
 **Key Engineering Decisions:**
 
-- **`SELECT FOR UPDATE` with `ORDER BY id`** — database-level synchronization primitive that serializes concurrent access to shared account rows; `ORDER BY id` ensures both transfers always lock rows in the same order, preventing deadlocks entirely
-- **Idempotency via PostgreSQL `UNIQUE` constraint** — client-generated UUIDs enforced at the database layer prevent duplicate charges under network retry conditions, regardless of application-level bugs
-- **Double-entry bookkeeping schema** — every transfer creates a `DEBIT` and `CREDIT` ledger entry with a `balance_after` snapshot, giving a complete immutable audit trail of every state change
-- **3-check SQL reconciliation engine** — verifies money conservation across all accounts, confirms debits equal credits per transaction, and flags stuck `PENDING` transactions older than 5 minutes
-- **Jest integration tests** — cover atomic transfer success, full rollback-on-failure (both balances unchanged), and idempotency deduplication (same key twice = one deduction)
-- **Security** — JWT authentication, Zod schema validation on all endpoints, Helmet for HTTP security headers, IP-based rate limiting
+- **`SELECT FOR UPDATE` with `ORDER BY id`** — database-level synchronization primitive that serializes concurrent access to shared account rows; `ORDER BY id` ensures every transfer locks rows in the same order, so two opposite transfers can never deadlock each other
+- **Idempotency keys** — a per-key PostgreSQL advisory lock makes identical requests wait their turn, ownership is checked before anything is replayed, and a retry gets back the original result; the `UNIQUE` constraint stays as the last guard against duplicate charges
+- **Double-entry bookkeeping schema** — every transfer creates a `DEBIT` and `CREDIT` ledger entry with a `balance_after` snapshot, giving a complete, append-only audit trail of every state change
+- **Exact money maths** — amounts are worked out in whole units with `BigInt` instead of floats, and transfers between different currencies are rejected
+- **3-check SQL reconciliation engine** — scoped to the logged-in user's own accounts: compares balances with the ledger down to the smallest unit, checks every transfer has exactly one debit and one credit, and flags `PENDING` transactions older than 5 minutes
+- **24 Jest tests + CI** — real-PostgreSQL tests for concurrent duplicate requests, opposite-direction transfers, rollback-on-failure and reconciliation scope, plus quick unit checks for edge cases; GitHub Actions runs them on every push
+- **Bugs found and fixed** — a deposit that saved the money but still returned an error, and a replay path that could show another user's transaction; each now has a regression test
+- **Security** — JWT authentication, Zod validation on every request body, Helmet for HTTP security headers, IP-based rate limiting
 
 ---
 
@@ -116,10 +118,12 @@ I build backend systems and full-stack applications. My focus is on writing code
 **Key Engineering Decisions:**
 
 - **Constraint-based prompt engineering** — engineered Gemini prompt that minimizes solution leakage and enforces strict adherence to single complexity-focused follow-up questions; achieving this required iterating through multiple prompt versions that leaked answers or asked generic questions unrelated to the code
-- **Multi-language code execution pipeline** — proxies code to glot.io REST API supporting Python, JS, Java, C++ with server-side timeout enforcement so infinite loops cannot hang the session
+- **Multi-language code execution pipeline** — proxies code to glot.io REST API supporting Python, JS, Java, C++, with a 10-second timeout on every execution call so an infinite loop can't hang the session
+- **Honest judging** — a submission only passes when the program runs cleanly and the output matches; an answer printed just before a crash no longer counts
 - **Monaco editor integration** — same editor as VSCode, embedded in-browser with syntax highlighting, language switching, and starter templates per language
 - **Session persistence** — every interview stored in PostgreSQL with code snapshots at each AI interaction, enabling full post-session reports with AI conversation transcript and time taken
-- **Cross-domain JWT auth** — HTTP-only cookies with `secure: true` and `sameSite: 'none'` required for cookie transmission across Vercel (frontend) and Render (backend) — without both flags the browser silently drops the cookie on every cross-domain request
+- **Cross-domain JWT auth** — HTTP-only cookies with `secure: true` and `sameSite: 'none'` required for cookie transmission across Vercel (frontend) and Render (backend) — without both flags the browser silently drops the cookie on every cross-domain request (a separate development mode keeps login working on `localhost`)
+- **Tests + CI** — 22 Jest/Supertest tests with glot.io and the database mocked, run by GitHub Actions on every push; the database schema sets up with one command
 
 **Why I built this:** LeetCode measures correctness. Real interviews measure how you communicate under pressure. This builds the missing layer.
 
